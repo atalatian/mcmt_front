@@ -1,7 +1,8 @@
-import {useCallback, useEffect, useRef, useState} from "react";
+import {useCallback, useContext, useEffect, useRef, useState} from "react";
 import videojs from "video.js";
 import 'video.js/dist/video-js.css';
 import Player from "video.js/dist/types/player";
+import {ContentCanvasBridgeContext} from "./ViewController/ContentCanvasBridgeContext";
 
 export interface Require {
     url: string,
@@ -14,6 +15,11 @@ const Camera = (props: Require) => {
     const [videoRefSpecified, setVideoRefSpecified] = useState(false);
     const playerRef = useRef<Player>();
     const [playerRefSpecified, setPlayerRefSpecified] = useState(false);
+    const changeWidth = useContext(ContentCanvasBridgeContext)?.changeWidth;
+    const changeHeight = useContext(ContentCanvasBridgeContext)?.changeHeight;
+
+    if (changeWidth === undefined) return <></>;
+    if (changeHeight === undefined) return <></>;
 
     useEffect(() => {
         if (!videoRefSpecified || videoRef.current === undefined) return;
@@ -24,12 +30,18 @@ const Camera = (props: Require) => {
 
         const options = {
             autoplay: true,
-            controls: true,
+            controls: false,
             responsive: true,
             fluid: true,
         };
 
-        playerRef.current = videojs(videoElement, options);
+        playerRef.current = videojs(videoElement, options, () => {
+            //@ts-ignore
+            playerRef.current.on('resize', () => {
+                changeHeight(playerRef.current!.el_.getBoundingClientRect().height)
+                changeWidth(playerRef.current!.el_.getBoundingClientRect().width)
+            });
+        });
         setPlayerRefSpecified(true);
 
     }, [videoRefSpecified])
