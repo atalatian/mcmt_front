@@ -7,6 +7,7 @@ import Transformer = Konva.Transformer;
 import KonvaEventObject = Konva.KonvaEventObject;
 import MyLine from "./MyLine";
 import Rects from "./Rects";
+import {is} from "immer/dist/utils/common";
 
 export interface Require {
     shape: Shape,
@@ -17,14 +18,16 @@ const MyGroup = (props: Require) => {
 
     const { isSelected, shape } = props;
 
+    const changeXY = useContext(TrackingCanvasContext)?.changeXY;
+    const changeSelectedId = useContext(TrackingCanvasContext)?.changeSelectedId;
+
+    if (changeXY === undefined) return <></>;
+    if (changeSelectedId === undefined) return <></>;
+
     const groupRef = useRef<Group>();
     const [groupRefSpecified, setGroupRefSpecified] = useState(false);
     const trRef = useRef<Transformer>();
     const [trRefSpecified, setTrRefSpecified] = useState(false);
-    const rectWidth = 7;
-
-    const changeXY = useContext(TrackingCanvasContext)!.changeXY;
-    const changeSelectedId = useContext(TrackingCanvasContext)!.changeSelectedId;
 
     useEffect(() => {
         if (!isSelected) return;
@@ -42,19 +45,19 @@ const MyGroup = (props: Require) => {
         trRef.current.forceUpdate();
     }, [shape.points, trRefSpecified])
 
-    const handleMouseDown = (event: KonvaEventObject<MouseEvent>) => {
-        event.cancelBubble = shape.isFinished;
-        if (shape.isFinished){
-            changeSelectedId(shape.id);
-        }
-    }
-
     const handleDragEnd = (el: KonvaEventObject<DragEvent>) => {
+        el.cancelBubble = shape.isFinished;
         changeXY(shape.id, [el.target.attrs.x, el.target.attrs.y])
     }
 
-    const handleDragMove = useCallback((el: KonvaEventObject<DragEvent>) => {
+    const handleDragStart = (event: KonvaEventObject<DragEvent>) => {
+        event.cancelBubble = shape.isFinished;
+        event.target.getStage()!.container().style.cursor = 'grabbing';
+    }
 
+    const handleDragMove = useCallback((el: KonvaEventObject<DragEvent>) => {
+        el.cancelBubble = shape.isFinished;
+        el.target.getStage()!.container().style.cursor = 'grabbing';
         const stageWidth = Math.floor(el.target.getStage()!.attrs.width);
         const stageHeight = Math.floor(el.target.getStage()!.attrs.height);
 
@@ -102,6 +105,47 @@ const MyGroup = (props: Require) => {
         }
     }, [shape.points])
 
+    const handleMouseDown = (event: KonvaEventObject<MouseEvent>) => {
+        event.cancelBubble = shape.isFinished;
+        if (shape.isFinished){
+            changeSelectedId(shape.id);
+        }
+    }
+
+    const handleMouseOver = (event: KonvaEventObject<MouseEvent>) => {
+        event.cancelBubble = shape.isFinished;
+        if (shape.isFinished && !isSelected){
+            event.target.getStage()!.container().style.cursor = 'pointer';
+        }
+        if (shape.isFinished && isSelected){
+            event.target.getStage()!.container().style.cursor = 'grab';
+        }
+    }
+
+    const handleMouseEnter = (event: KonvaEventObject<MouseEvent>) => {
+        event.cancelBubble = shape.isFinished
+        if (shape.isFinished && !isSelected){
+            event.target.getStage()!.container().style.cursor = 'pointer';
+        }
+        if (shape.isFinished && isSelected){
+            event.target.getStage()!.container().style.cursor = 'grab';
+        }
+    }
+
+    const handleMouseLeave = (event: KonvaEventObject<MouseEvent>) => {
+        event.cancelBubble = shape.isFinished;
+        if (shape.isFinished){
+            event.target.getStage()!.container().style.cursor = 'default';
+        }
+    }
+
+    const handleMouseOut = (event: KonvaEventObject<MouseEvent>) => {
+        event.cancelBubble = shape.isFinished;
+        if (shape.isFinished){
+            event.target.getStage()!.container().style.cursor = 'default';
+        }
+    }
+
     const handleGroupRef = useCallback((el: Group | null) => {
         if (el === null) return;
         groupRef.current = el;
@@ -115,16 +159,24 @@ const MyGroup = (props: Require) => {
     }, [])
 
     return(
-        <KonvaGroup x={shape.x} y={shape.y} onDragMove={handleDragMove} onDragEnd={handleDragEnd} onMouseDown={handleMouseDown} draggable={shape.isFinished}
-                    ref={handleGroupRef}>
-            <MyLine isFinished={shape.isFinished} points={shape.points}/>
-            <Rects shape={shape}/>
+        <>
+            <KonvaGroup x={shape.x} y={shape.y} onDragStart={handleDragStart} onDragMove={handleDragMove} onDragEnd={handleDragEnd}
+                        onMouseEnter={handleMouseEnter}
+                        onMouseDown={handleMouseDown}
+                        onMouseLeave={handleMouseLeave}
+                        onMouseOver={handleMouseOver}
+                        onMouseOut={handleMouseOut}
+                        draggable={shape.isFinished}
+                        ref={handleGroupRef}>
+                <MyLine isFinished={shape.isFinished} points={shape.points}/>
+                <Rects shape={shape}/>
+            </KonvaGroup>
             {
                 isSelected &&
                 <KonvaTransformer padding={10} borderStroke={`#1565c0`} borderStrokeWidth={4} ref={handleTransformerRef} resizeEnabled={false}
                                   rotateEnabled={false}/>
             }
-        </KonvaGroup>
+        </>
     )
 }
 

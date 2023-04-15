@@ -14,32 +14,15 @@ const MyRect = (props: Require) => {
 
     const { shape, point, index } = props;
 
-    const changeIsMouseOverStartPoint = useContext(TrackingCanvasContext)!.changeIsMouseOverStartPoint;
-    const changePoints = useContext(TrackingCanvasContext)!.changePoints;
-    const rectWidth = useContext(TrackingCanvasContext)!.rectWidth;
+    const changeIsMouseOverStartPoint = useContext(TrackingCanvasContext)?.changeIsMouseOverStartPoint;
+    const changePoints = useContext(TrackingCanvasContext)?.changePoints;
+    const rectWidth = useContext(TrackingCanvasContext)?.rectWidth;
 
+    if (changeIsMouseOverStartPoint === undefined) return <></>;
+    if (changePoints === undefined) return <></>;
+    if (rectWidth === undefined) return <></>;
 
-    const handleMouseOverStartPoint = (event: KonvaEventObject<MouseEvent>) => {
-        if (shape.isFinished || shape.points.length < 3) return;
-        event.target.scale({ x: 1.5, y: 1.5 });
-
-        changeIsMouseOverStartPoint(shape.id, true);
-    };
-
-    const handleMouseOverPoint = (event: KonvaEventObject<MouseEvent>) => {
-        event.target.scale({ x: 1.5, y: 1.5 });
-    }
-
-    const handleMouseOutStartPoint = (event: KonvaEventObject<MouseEvent>) => {
-        event.target.scale({ x: 1, y: 1 });
-        changeIsMouseOverStartPoint(shape.id, false);
-    };
-
-    const handleMouseOutPoint = (event: KonvaEventObject<MouseEvent>) => {
-        event.target.scale({ x: 1, y: 1 });
-    }
-
-    const handleDragMovePoint = (event: KonvaEventObject<DragEvent>) => {
+    const handleDragMove = (event: KonvaEventObject<DragEvent>) => {
         event.cancelBubble = shape.isFinished;
         const index = event.target.index - 1;
         const stageWidth = event.target.getStage()!.attrs.width;
@@ -71,28 +54,66 @@ const MyRect = (props: Require) => {
         changePoints(shape.id, [...shape.points.slice(0, index), pos, ...shape.points.slice(index + 1)])
     }
 
-    const startPointAttr =
-        index === 0 ?
-            {
-                hitStrokeWidth: 12,
-                stroke: shape.type === 'line' ? `red` : `#1565c0`,
-                onMouseOver: handleMouseOverStartPoint,
-                onMouseOut: handleMouseOutStartPoint
+    const handleMouseDown = (event: KonvaEventObject<MouseEvent>) => {
+        event.cancelBubble = shape.isFinished;
+        if (shape.isFinished){
+            event.target.getStage()!.container().style.cursor = 'grabbing';
+        }
+    }
 
-            }
-            :
-            null;
+    const handleMouseEnter = (event: KonvaEventObject<MouseEvent>) => {
+        event.cancelBubble = shape.isFinished;
+        if (shape.isFinished){
+            event.target.scale({ x: 1.5, y: 1.5 });
+            event.target.getStage()!.container().style.cursor = 'grab';
+        }
+    }
 
-    const afterFinishedAttr =
-        shape.isFinished ?
-            {
-                hitStrokeWidth: 12,
-                stroke: `red`,
-                onMouseOver: handleMouseOverPoint,
-                onMouseOut: handleMouseOutPoint
-            }
-            :
-            null;
+    const handleMouseOver = (event: KonvaEventObject<MouseEvent>) => {
+        event.cancelBubble = shape.isFinished;
+        if (shape.isFinished){
+            event.target.scale({ x: 1.5, y: 1.5 });
+            event.target.getStage()!.container().style.cursor = 'grab';
+        }
+
+        if (index === 0 && !shape.isFinished && shape.points.length >= 2) {
+            event.target.scale({ x: 1.5, y: 1.5 });
+            event.target.getStage()!.container().style.cursor = 'pointer';
+            changeIsMouseOverStartPoint(shape.id, true);
+        }
+    }
+
+    const handeMouseOut = (event: KonvaEventObject<MouseEvent>) => {
+        event.cancelBubble = shape.isFinished;
+        if (shape.isFinished){
+            event.target.scale({ x: 1, y: 1 });
+            event.target.getStage()!.container().style.cursor = 'default';
+        }
+
+        if (index === 0 && !shape.isFinished && shape.points.length >= 2) {
+            event.target.scale({ x: 1, y: 1 });
+            event.target.getStage()!.container().style.cursor = 'default';
+            changeIsMouseOverStartPoint(shape.id, false);
+        }
+    }
+
+    const handleMouseLeave = (event: KonvaEventObject<MouseEvent>) => {
+        event.cancelBubble = shape.isFinished;
+        if (shape.isFinished){
+            event.target.scale({ x: 1, y: 1 });
+            event.target.getStage()!.container().style.cursor = 'default';
+        }
+    }
+
+    const handleDragEnd = (event: KonvaEventObject<DragEvent>) => {
+        event.cancelBubble = shape.isFinished;
+        if (shape.isFinished){
+            event.target.getStage()!.container().style.cursor = 'grab'
+        }
+    }
+
+    const startPointAttr = index === 0 && {stroke: `#1565c0`,}
+    const afterFinishedAttr = shape.isFinished && {stroke: `red`,}
 
     return(
         <Rect
@@ -103,10 +124,17 @@ const MyRect = (props: Require) => {
             width={rectWidth}
             height={rectWidth}
             fill="white"
-            stroke="red"
+            stroke={`red`}
             strokeWidth={3}
             draggable={shape.isFinished}
-            onDragMove={handleDragMovePoint}
+            onDragMove={handleDragMove}
+            onDragEnd={handleDragEnd}
+            onMouseEnter={handleMouseEnter}
+            onMouseOver={handleMouseOver}
+            onMouseOut={handeMouseOut}
+            onMouseDown={handleMouseDown}
+            onMouseLeave={handleMouseLeave}
+            hitStrokeWidth={12}
             {...startPointAttr}
             {...afterFinishedAttr}
         />

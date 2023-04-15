@@ -1,4 +1,4 @@
-import {useCallback, useContext, useEffect, useState} from "react";
+import {useCallback, useContext, useEffect} from "react";
 import {Line, Stage} from "react-konva";
 import {Layer} from "react-konva/es/ReactKonvaCore";
 import Konva from "konva";
@@ -9,15 +9,25 @@ import {ContentCanvasBridgeContext} from "./ViewController/ContentCanvasBridgeCo
 
 const Canvas = () => {
 
-    const width = useContext(ContentCanvasBridgeContext)!.width;
-    const height = useContext(ContentCanvasBridgeContext)!.height;
-    const shape = useContext(TrackingCanvasContext)!.shapes.find((shape) => !shape.isFinished);
-    const addShape = useContext(TrackingCanvasContext)!.addShape;
-    const addPoint = useContext(TrackingCanvasContext)!.addPoint;
-    const changeSelectedId = useContext(TrackingCanvasContext)!.changeSelectedId;
-    const changeIsFinished = useContext(TrackingCanvasContext)!.changeIsFinished;
-    const changeMousePos = useContext(TrackingCanvasContext)!.changeMousePos;
+    const width = useContext(ContentCanvasBridgeContext)?.width;
+    const height = useContext(ContentCanvasBridgeContext)?.height;
+    const shapes = useContext(TrackingCanvasContext)?.shapes;
+    const addShape = useContext(TrackingCanvasContext)?.addShape;
+    const addPoint = useContext(TrackingCanvasContext)?.addPoint;
+    const changeSelectedId = useContext(TrackingCanvasContext)?.changeSelectedId;
+    const changeIsFinished = useContext(TrackingCanvasContext)?.changeIsFinished;
+    const changeMousePos = useContext(TrackingCanvasContext)?.changeMousePos;
 
+    if (width === undefined) return <></>;
+    if (height === undefined) return <></>;
+    if (shapes === undefined) return <></>;
+    if (addShape === undefined) return <></>;
+    if (addPoint === undefined) return <></>;
+    if (changeSelectedId === undefined) return <></>;
+    if (changeIsFinished === undefined) return <></>;
+    if (changeMousePos === undefined) return <></>;
+
+    const shape = shapes.find((shape) => !shape.isFinished);
 
     useEffect(() => {
         if (shape !== undefined) return;
@@ -27,29 +37,21 @@ const Canvas = () => {
 
     const handleClick = (event: KonvaEventObject<MouseEvent>) => {
         if (shape === undefined) return;
-        const id = shape.id;
-        const isFinished = shape.isFinished;
-        const points = shape.points;
-        const isMouseOverStartPoint = shape.isMouseOverStartPoint
-        const type = shape.type;
-
-
-        if (isFinished) return;
+        if (shape.isFinished) return;
         const stage = event.target.getStage();
         if (stage === null) return;
         const mousePos = [stage.getPointerPosition()!.x - 3.5, stage.getPointerPosition()!.y - 3.5];
-        if (isMouseOverStartPoint && points.length >= 3 && type === 'polygon') {
-            changeIsFinished(id, true);
-            changeSelectedId(id);
+        if (shape.isMouseOverStartPoint && shape.points.length >= 3 && shape.type === 'polygon') {
+            changeIsFinished(shape.id, true);
+            changeSelectedId(shape.id);
         } else {
-            addPoint(id, mousePos);
+            addPoint(shape.id, mousePos);
         }
     };
 
     const handleMouseMove = (event: KonvaEventObject<MouseEvent>) => {
         const stage = event.target.getStage();
         if (stage === null) return;
-        stage.setPointersPositions(event);
         const mousePos = [stage.getPointerPosition()!.x - 3.5, stage?.getPointerPosition()!.y - 3.5];
 
         changeMousePos(mousePos);
