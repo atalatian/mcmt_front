@@ -14,7 +14,9 @@ import {
     QueryClient,
     QueryClientProvider,
 } from '@tanstack/react-query'
-import ProjectsDataContextProvider from "./Components/ProjectsDataContext";
+import ProjectsDataContextProvider from "./Components/Projects/ViewModel/ProjectsDataContext";
+import ProjectDataContextProvider from "./Components/Cameras/ViewModel/ProjectDataContext";
+import CamerasDataContextProvider from "./Components/ActiveCameras/ViewModel/CamerasDataContext";
 
 const router = createBrowserRouter([
     {
@@ -23,11 +25,17 @@ const router = createBrowserRouter([
     },
     {
         path: "/projects",
-        element: <ProjectsPage/>,
+        element:
+            <ProjectsDataContextProvider>
+                <ProjectsPage/>
+            </ProjectsDataContextProvider>,
     },
     {
-        path: "/project/cameras",
-        element: <CamerasPage/>,
+        path: "/project/:id/cameras",
+        element:
+            <ProjectDataContextProvider>
+                <CamerasPage/>
+            </ProjectDataContextProvider>,
     },
     {
         path: "/tracking",
@@ -35,7 +43,10 @@ const router = createBrowserRouter([
     },
     {
         path: "/grid",
-        element: <ActiveCamerasPage/>
+        element:
+            <CamerasDataContextProvider>
+                <ActiveCamerasPage/>
+            </CamerasDataContextProvider>
     }
 ]);
 

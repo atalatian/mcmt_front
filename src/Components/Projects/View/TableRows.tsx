@@ -1,5 +1,8 @@
-import {TableCell, TableRow} from "@mui/material";
-import { Require as CameraRequire } from "../../Cameras/View/TableRows";
+import React from "react";
+import {Button, TableCell, TableRow} from "@mui/material";
+import {useContext} from "react";
+import {ProjectsDataContext} from "../ViewModel/ProjectsDataContext";
+import { redirect } from "react-router-dom";
 
 export interface Require {
     id: number,
@@ -8,16 +11,29 @@ export interface Require {
 
 const TableRows = () => {
 
+    const projects = useContext(ProjectsDataContext)?.projects;
+    if (projects === undefined) return <></>;
+    if (projects.data === undefined) return <></>;
+
+    const handleClick = (id: number) => {
+        return (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+            redirect(`/project/${id}/cameras`);
+        }
+    }
 
     return(
         <>
             {
-                [].map((item) => {
+                projects.data.map((project) => {
                     return(
                         <TableRow>
-                            <TableCell align="right"></TableCell>
-                            <TableCell align="right"></TableCell>
-                            <TableCell align="right"></TableCell>
+                            <TableCell align="right">{project.id}</TableCell>
+                            <TableCell align="right">{project.name}</TableCell>
+                            <TableCell align="right">
+                                <Button onClick={handleClick(project.id)}>
+                                    Cameras
+                                </Button>
+                            </TableCell>
                         </TableRow>
                     )
                 })

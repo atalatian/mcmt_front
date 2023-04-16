@@ -9,7 +9,7 @@ const Table = () => {
                     <TableRow>
                         <TableCell align="right">ID</TableCell>
                         <TableCell align="right">Name</TableCell>
-                        <TableCell align="right">Plan</TableCell>
+                        <TableCell align="right">Cameras List</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>

@@ -1,13 +1,19 @@
 import Camera from "./Camera";
 import video from "../../../assets/video4.mp4";
-import {useCallback, useEffect, useMemo, useState} from "react";
+import {useCallback, useContext, useEffect, useMemo, useState} from "react";
 import { Provide as CameraProvide } from "./Camera";
+import {CamerasDataContext} from "../ViewModel/CamerasDataContext";
 
 export interface Require {
     id: number,
     uri: string,
 }
 const ActiveCameras = () => {
+
+    const cameras = useContext(CamerasDataContext)?.cameras;
+    if (cameras === undefined) return <></>;
+    if (cameras.data === undefined) return <></>;
+    if (cameras.data.length === 0) return <></>;
 
     const [currentTime, setCurrentTime] = useState(0);
 
@@ -43,11 +49,20 @@ const ActiveCameras = () => {
         )
     }
 
+
+    const value: {
+        controller: Require,
+        supporters: Require[],
+    } = {
+        controller: cameras.data[0],
+        supporters: cameras.data,
+    };
+
     return(
         <>
-            <Camera url={video} Controller={PrimaryCameraController}/>
+            <Camera url={value.controller.uri} Controller={PrimaryCameraController}/>
             {
-                [0,0].map((camera, index) => <Camera key={index} url={video} currentTime={currentTime} Controller={CameraController}/>)
+                value.supporters.map((camera) => <Camera key={camera.id} url={camera.uri} currentTime={currentTime} Controller={CameraController}/>)
             }
         </>
     )

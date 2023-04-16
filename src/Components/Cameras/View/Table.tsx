@@ -10,9 +10,7 @@ const Table = () => {
                         <TableCell align="right">ID</TableCell>
                         <TableCell align="right">Channel</TableCell>
                         <TableCell align="right">Model</TableCell>
-                        <TableCell align="right">Project</TableCell>
                         <TableCell align="right">URI</TableCell>
-                        <TableCell align="right">Config</TableCell>
                         <TableCell align="right">Is calibrated?</TableCell>
                     </TableRow>
                 </TableHead>
