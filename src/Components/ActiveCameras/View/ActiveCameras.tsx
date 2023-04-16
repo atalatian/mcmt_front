@@ -3,6 +3,10 @@ import video from "../../../assets/video4.mp4";
 import {useCallback, useEffect, useMemo, useState} from "react";
 import { Provide as CameraProvide } from "./Camera";
 
+export interface Require {
+    id: number,
+    uri: string,
+}
 const ActiveCameras = () => {
 
     const [currentTime, setCurrentTime] = useState(0);

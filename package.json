@@ -12,6 +12,7 @@
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@mui/material": "^5.12.0",
+    "@tanstack/react-query": "^4.29.3",
     "immer": "^9.0.21",
     "konva": "^8.4.3",
     "localforage": "^1.10.0",

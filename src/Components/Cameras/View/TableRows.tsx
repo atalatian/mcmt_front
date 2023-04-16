@@ -2,6 +2,13 @@ import {Box, TableCell, TableRow} from "@mui/material";
 import CheckBox from "./CheckBox";
 import { Provide as CheckBoxProvide } from "./CheckBox";
 
+export interface Require {
+    id: number,
+    channel: string,
+    model: string,
+    uri: string,
+    is_calibrated: boolean,
+}
 const TableRows = () => {
 
     const ClickListener = (props: CheckBoxProvide & { children: JSX.Element } ) => {

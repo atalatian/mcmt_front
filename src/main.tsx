@@ -10,6 +10,11 @@ import ProjectsPage from "./Components/Projects/View/ProjectsPage";
 import CamerasPage from "./Components/Cameras/View/CamerasPage";
 import TrackingPage from "./Components/Tracking/View/TrackingPage";
 import ActiveCamerasPage from "./Components/ActiveCameras/View/ActiveCamerasPage";
+import {
+    QueryClient,
+    QueryClientProvider,
+} from '@tanstack/react-query'
+import ProjectsDataContextProvider from "./Components/ProjectsDataContext";
 
 const router = createBrowserRouter([
     {
@@ -34,8 +39,14 @@ const router = createBrowserRouter([
     }
 ]);
 
+const queryClient = new QueryClient()
+
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-      <RouterProvider router={router} />
+      <QueryClientProvider client={queryClient}>
+          <ProjectsDataContextProvider>
+              <RouterProvider router={router} />
+          </ProjectsDataContextProvider>
+      </QueryClientProvider>
   </React.StrictMode>,
 )
