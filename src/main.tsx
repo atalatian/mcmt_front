@@ -17,11 +17,15 @@ import {
 import ProjectsDataContextProvider from "./Components/Projects/ViewModel/ProjectsDataContext";
 import ProjectDataContextProvider from "./Components/Cameras/ViewModel/ProjectDataContext";
 import CamerasDataContextProvider from "./Components/ActiveCameras/ViewModel/CamerasDataContext";
+import InputsContextProvider from "./Components/Inputs/ViewModel/InputsContext";
 
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <InputsPage/>,
+        element:
+            <InputsContextProvider>
+                <InputsPage/>
+            </InputsContextProvider>,
     },
     {
         path: "/projects",

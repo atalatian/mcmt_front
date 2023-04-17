@@ -22,7 +22,7 @@ const ProjectDataContextProvider = (props: PropsWithChildren<{}>) => {
     if (id === undefined) return <></>;
 
     const project = useQuery({
-        queryKey: ["Projects"],
+        queryKey: ["Project"],
         queryFn: () => fetch(`http://127.0.0.1:8001/projects/${id}`)
             .then((res) => res.json() as unknown as Project)
     })

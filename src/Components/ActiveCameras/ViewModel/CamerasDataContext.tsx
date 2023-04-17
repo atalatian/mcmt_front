@@ -19,7 +19,7 @@ const CamerasDataContextProvider = (props: PropsWithChildren<{}>) => {
     if (id === undefined) return <></>;
 
     const cameras = useQuery({
-        queryKey: ["Projects"],
+        queryKey: ["Cameras"],
         queryFn: () => fetch(`http://127.0.0.1:8001/cameras/`)
             .then((res) => res.json() as unknown as Camera[])
     })
