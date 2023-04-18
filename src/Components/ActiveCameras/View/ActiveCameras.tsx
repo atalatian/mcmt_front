@@ -85,10 +85,11 @@ const ActiveCameras = () => {
     }
 
 
+
     return(
         <>
             <Box overflow={`hidden`}>
-                <Box position={`fixed`} width={640} height={360} zIndex={2} bottom={50} right={10}>
+                <Box position={`fixed`} width={`${100/3}vw`} zIndex={2} bottom={10} right={10}>
                     <Camera url={cameras.data[0].uri} Controller={PrimaryCameraController}/>
                     <Box mt={1}>
                         <Button fullWidth onClick={handleClick} variant={`contained`}>
@@ -105,7 +106,7 @@ const ActiveCameras = () => {
                         )
                     }
                 </Grid2>
-                <Box height={500}></Box>
+                <Box height={`${((100/3) * 9)/16}vw`}></Box>
             </Box>
         </>
     )
