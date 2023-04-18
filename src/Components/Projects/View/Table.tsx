@@ -4,12 +4,12 @@ import TableRows from "./TableRows";
 const Table = () => {
     return(
         <TableContainer component={Paper}>
-            <MuiTable sx={{ minWidth: 650 }} aria-label="simple table">
+            <MuiTable aria-label="simple table">
                 <TableHead>
                     <TableRow>
-                        <TableCell align="right">ID</TableCell>
-                        <TableCell align="right">Name</TableCell>
-                        <TableCell align="right">Cameras List</TableCell>
+                        <TableCell align="left">URL</TableCell>
+                        <TableCell align="left">Name</TableCell>
+                        <TableCell align="left">Cameras List</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>

@@ -18,6 +18,7 @@ import ProjectsDataContextProvider from "./Components/Projects/ViewModel/Project
 import ProjectDataContextProvider from "./Components/Cameras/ViewModel/ProjectDataContext";
 import CamerasDataContextProvider from "./Components/ActiveCameras/ViewModel/CamerasDataContext";
 import InputsContextProvider from "./Components/Inputs/ViewModel/InputsContext";
+import {CssBaseline} from "@mui/material";
 
 const router = createBrowserRouter([
     {
@@ -46,7 +47,7 @@ const router = createBrowserRouter([
         element: <TrackingPage/>,
     },
     {
-        path: "/grid",
+        path: "/project/:id/cameras/grid",
         element:
             <CamerasDataContextProvider>
                 <ActiveCamerasPage/>
@@ -59,9 +60,8 @@ const queryClient = new QueryClient()
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
       <QueryClientProvider client={queryClient}>
-          <ProjectsDataContextProvider>
-              <RouterProvider router={router} />
-          </ProjectsDataContextProvider>
+          <CssBaseline/>
+          <RouterProvider router={router} />
       </QueryClientProvider>
   </React.StrictMode>,
 )

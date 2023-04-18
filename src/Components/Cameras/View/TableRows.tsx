@@ -1,8 +1,10 @@
-import {Box, TableCell, TableRow} from "@mui/material";
+import {Box, Button, TableCell, TableRow} from "@mui/material";
 import CheckBox from "./CheckBox";
 import { Provide as CheckBoxProvide } from "./CheckBox";
 import {useContext} from "react";
 import {ProjectDataContext} from "../ViewModel/ProjectDataContext";
+import React from "react";
+import {useNavigate} from "react-router-dom";
 
 export interface Require {
     id: number,
@@ -14,6 +16,7 @@ export interface Require {
 const TableRows = () => {
 
     const project = useContext(ProjectDataContext)?.project;
+    const navigate = useNavigate();
     if (project === undefined) return <></>;
     if (project.data === undefined) return <></>;
 
@@ -32,20 +35,29 @@ const TableRows = () => {
         )
     }
 
-    const value: Require[] = project.data.cameras;
+    const handleClick = (id: number) => {
+        return (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+
+        }
+    }
 
     return(
         <>
             {
-                value.map((camera) => {
+                project.data.cameras.map((camera) => {
                     return(
                         <TableRow>
-                            <TableCell align="right">{camera.id}</TableCell>
-                            <TableCell align="right">{camera.channel}</TableCell>
-                            <TableCell align="right">{camera.model}</TableCell>
-                            <TableCell align="right">{camera.uri}</TableCell>
-                            <TableCell align="right">
+                            <TableCell align="left">{camera.id}</TableCell>
+                            <TableCell align="left">{camera.channel}</TableCell>
+                            <TableCell align="left">{camera.model}</TableCell>
+                            <TableCell align="left">{camera.uri}</TableCell>
+                            <TableCell align="left">
                                 <CheckBox ClickListener={ClickListener} defaultValue={camera.is_calibrated}/>
+                            </TableCell>
+                            <TableCell align="left">
+                                <Button variant={`contained`} onClick={handleClick(camera.id)} disabled={!camera.is_calibrated}>
+                                    Go
+                                </Button>
                             </TableCell>
                         </TableRow>
                     )
