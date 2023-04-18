@@ -10,9 +10,9 @@ export interface Provide {
     submitTrigger: () => void,
 }
 
-export const InputsContext = createContext<Provide | undefined>(undefined);
+export const AddProjectContext = createContext<Provide | undefined>(undefined);
 
-const InputsContextProvider = (props: PropsWithChildren<{}>) => {
+const AddProjectContextProvider = (props: PropsWithChildren<{}>) => {
 
     const form = useRef<FormData>(new FormData());
 
@@ -47,10 +47,10 @@ const InputsContextProvider = (props: PropsWithChildren<{}>) => {
     }
 
     return(
-        <InputsContext.Provider value={value}>
+        <AddProjectContext.Provider value={value}>
             {props.children}
-        </InputsContext.Provider>
+        </AddProjectContext.Provider>
     )
 }
 
-export default InputsContextProvider;
+export default AddProjectContextProvider;

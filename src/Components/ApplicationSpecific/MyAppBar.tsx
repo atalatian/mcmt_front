@@ -11,7 +11,11 @@ const MyAppBar = (props: PropsWithChildren<{}>) => {
     }
 
     const handleAddProjectClick = () => {
-        navigate("/");
+        navigate("/addProject");
+    }
+
+    const handleAddCameraClick = () => {
+        navigate("/addCamera")
     }
 
     return(
@@ -23,6 +27,9 @@ const MyAppBar = (props: PropsWithChildren<{}>) => {
                 </Button>
                 <Button sx={{ color: `white` }} onClick={handleAddProjectClick}>
                     Add Project
+                </Button>
+                <Button sx={{ color: `white` }} onClick={handleAddCameraClick}>
+                    Add Camera
                 </Button>
             </Toolbar>
         </AppBar>

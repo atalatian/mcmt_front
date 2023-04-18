@@ -5,9 +5,9 @@ import {useContext} from "react";
 import {ProjectDataContext} from "../ViewModel/ProjectDataContext";
 import React from "react";
 import {useNavigate} from "react-router-dom";
+import {CamerasFilterContext} from "../ViewModel/CamerasFilterContext";
 
 export interface Require {
-    id: number,
     channel: string,
     model: string,
     uri: string,
@@ -15,10 +15,9 @@ export interface Require {
 }
 const TableRows = () => {
 
-    const project = useContext(ProjectDataContext)?.project;
+    const cameras = useContext(CamerasFilterContext)?.cameras;
     const navigate = useNavigate();
-    if (project === undefined) return <></>;
-    if (project.data === undefined) return <></>;
+    if (cameras === undefined) return <></>;
 
     const ClickListener = (props: CheckBoxProvide & { children: JSX.Element } ) => {
 
@@ -44,10 +43,9 @@ const TableRows = () => {
     return(
         <>
             {
-                project.data.cameras.map((camera) => {
+                cameras.data?.map((camera, index) => {
                     return(
-                        <TableRow>
-                            <TableCell align="left">{camera.id}</TableCell>
+                        <TableRow key={index}>
                             <TableCell align="left">{camera.channel}</TableCell>
                             <TableCell align="left">{camera.model}</TableCell>
                             <TableCell align="left">{camera.uri}</TableCell>
@@ -55,7 +53,7 @@ const TableRows = () => {
                                 <CheckBox ClickListener={ClickListener} defaultValue={camera.is_calibrated}/>
                             </TableCell>
                             <TableCell align="left">
-                                <Button variant={`contained`} onClick={handleClick(camera.id)} disabled={!camera.is_calibrated}>
+                                <Button variant={`contained`} disabled={!camera.is_calibrated}>
                                     Go
                                 </Button>
                             </TableCell>

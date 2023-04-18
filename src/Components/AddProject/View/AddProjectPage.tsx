@@ -4,15 +4,15 @@ import {useContext, useEffect} from "react";
 import {Box, Button, Stack, Typography} from "@mui/material";
 import { Provide as FileInputProvide } from "./FileInput";
 import { Provide as NameInputProvide } from "./NameInput";
-import {InputsContext} from "../ViewModel/InputsContext";
+import {AddProjectContext} from "../ViewModel/AddProjectContext";
 import {useNavigate} from "react-router-dom";
 import MyAppBar from "../../ApplicationSpecific/MyAppBar";
 
-const InputsPage = () => {
+const AddProjectPage = () => {
 
-    const changeFile = useContext(InputsContext)?.changeFile;
-    const changeName = useContext(InputsContext)?.changeName;
-    const submitTrigger = useContext(InputsContext)?.submitTrigger;
+    const changeFile = useContext(AddProjectContext)?.changeFile;
+    const changeName = useContext(AddProjectContext)?.changeName;
+    const submitTrigger = useContext(AddProjectContext)?.submitTrigger;
 
     if (changeName === undefined) return <></>;
     if (changeFile === undefined) return <></>;
@@ -53,9 +53,9 @@ const InputsPage = () => {
         <>
             <Box>
                 <MyAppBar></MyAppBar>
-                <Stack spacing={2} sx={{ mt: 1 }} margin={`auto`} maxWidth={`fit-content`}>
-                    <Typography component={"h1"} borderBottom={1} maxWidth={`fit-content`}>
-                        Inputs
+                <Stack spacing={2} sx={{ mt: 2 }} margin={`auto`} maxWidth={`sm`}>
+                    <Typography component={"h1"} borderBottom={1} maxWidth={`fit-content`} mb={1}>
+                        Add Project
                     </Typography>
                     <Box>
                         <NameInput Controller={NameInputController}/>
@@ -74,4 +74,4 @@ const InputsPage = () => {
     )
 }
 
-export default InputsPage;
+export default AddProjectPage;

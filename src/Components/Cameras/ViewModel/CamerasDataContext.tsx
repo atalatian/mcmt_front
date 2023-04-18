@@ -1,18 +1,16 @@
 import {createContext, PropsWithChildren} from "react";
 import {useQuery, UseQueryResult} from "@tanstack/react-query";
-import { Require as ActiveCamerasRequire } from "../View/ActiveCameras";
 import {CamerasDataProxy} from "../Model/ObjectProxies";
+import {Require as CamerasTableRowRequire} from "../View/TableRows";
 
 
-export interface Camera extends ActiveCamerasRequire{
+export interface Camera extends CamerasTableRowRequire{
     project: number,
 }
-
 export interface Provide {
     cameras: UseQueryResult<Camera[]>,
 }
 export const CamerasDataContext = createContext<Provide | undefined>(undefined);
-
 
 const CamerasDataContextProvider = (props: PropsWithChildren<{}>) => {
 

@@ -6,7 +6,7 @@ import {useNavigate} from "react-router-dom";
 
 export interface Require {
     name: string,
-    url: string,
+    id: number,
 }
 
 const TableRows = () => {
@@ -23,25 +23,16 @@ const TableRows = () => {
         }
     }
 
-    const urlAdaptor = (url: string) => {
-        const expression =
-            "http?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}:[a-zA-Z0-9()]{1,6}/[a-zA-Z0-9()]*/\\b([-a-zA-Z0-9()@:%_?\\+.~#?&//=]*)/";
-        const regex = new RegExp(expression);
-        const result = regex.exec(url);
-        const newResult = result!.filter((item) => !!parseInt(item)) as unknown[] as number[];
-        return newResult[0];
-    }
-
     return(
         <>
             {
                 projects.data.map((project) => {
                     return(
-                        <TableRow key={urlAdaptor(project.url)}>
-                            <TableCell align="left">{urlAdaptor(project.url)}</TableCell>
+                        <TableRow key={project.id}>
+                            <TableCell align="left">{project.id}</TableCell>
                             <TableCell align="left">{project.name}</TableCell>
                             <TableCell align="left">
-                                <Button variant={`contained`} onClick={handleClick(urlAdaptor(project.url))}>
+                                <Button variant={`contained`} onClick={handleClick(project.id)}>
                                     Cameras
                                 </Button>
                             </TableCell>

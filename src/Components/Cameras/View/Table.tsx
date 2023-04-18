@@ -7,7 +7,6 @@ const Table = () => {
             <MuiTable aria-label="simple table">
                 <TableHead>
                     <TableRow>
-                        <TableCell align="left">ID</TableCell>
                         <TableCell align="left">Channel</TableCell>
                         <TableCell align="left">Model</TableCell>
                         <TableCell align="left">URI</TableCell>

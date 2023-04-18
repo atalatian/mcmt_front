@@ -5,7 +5,7 @@ import {
     createBrowserRouter,
     RouterProvider,
 } from "react-router-dom";
-import InputsPage from "./Components/Inputs/View/InputsPage";
+import AddProjectPage from "./Components/AddProject/View/AddProjectPage";
 import ProjectsPage from "./Components/Projects/View/ProjectsPage";
 import CamerasPage from "./Components/Cameras/View/CamerasPage";
 import TrackingPage from "./Components/Tracking/View/TrackingPage";
@@ -15,18 +15,24 @@ import {
     QueryClientProvider,
 } from '@tanstack/react-query'
 import ProjectsDataContextProvider from "./Components/Projects/ViewModel/ProjectsDataContext";
-import ProjectDataContextProvider from "./Components/Cameras/ViewModel/ProjectDataContext";
 import CamerasDataContextProvider from "./Components/ActiveCameras/ViewModel/CamerasDataContext";
-import InputsContextProvider from "./Components/Inputs/ViewModel/InputsContext";
+import AddProjectContextProvider from "./Components/AddProject/ViewModel/AddProjectContext";
 import {CssBaseline} from "@mui/material";
+import CamerasFilterContextProvider from "./Components/ActiveCameras/ViewModel/CamerasFilterContext";
+import * as CamerasPageDataContext from "./Components/Cameras/ViewModel/CamerasDataContext";
+import * as CamerasPageFilterContext from "./Components/Cameras/ViewModel/CamerasFilterContext";
+import * as AddCameraProjectsDataContext from "./Components/AddCamera/ViewModel/ProjectsDataContext";
+import ModelDataContextProvider from "./Components/AddCamera/ViewModel/ModelsDataContext";
+import AddCameraPage from "./Components/AddCamera/View/AddCameraPage";
+import AddCameraContextProvider from "./Components/AddCamera/ViewModel/AddCameraContext";
 
 const router = createBrowserRouter([
     {
-        path: "/",
+        path: "/addProject",
         element:
-            <InputsContextProvider>
-                <InputsPage/>
-            </InputsContextProvider>,
+            <AddProjectContextProvider>
+                <AddProjectPage/>
+            </AddProjectContextProvider>,
     },
     {
         path: "/projects",
@@ -38,9 +44,11 @@ const router = createBrowserRouter([
     {
         path: "/project/:id/cameras",
         element:
-            <ProjectDataContextProvider>
-                <CamerasPage/>
-            </ProjectDataContextProvider>,
+            <CamerasPageDataContext.default>
+                <CamerasPageFilterContext.default>
+                    <CamerasPage/>
+                </CamerasPageFilterContext.default>
+            </CamerasPageDataContext.default>,
     },
     {
         path: "/tracking",
@@ -50,8 +58,28 @@ const router = createBrowserRouter([
         path: "/project/:id/cameras/grid",
         element:
             <CamerasDataContextProvider>
-                <ActiveCamerasPage/>
+                <CamerasFilterContextProvider>
+                    <ActiveCamerasPage/>
+                </CamerasFilterContextProvider>
             </CamerasDataContextProvider>
+    },
+    {
+        path: "/addCamera",
+        element:
+            <AddCameraProjectsDataContext.default>
+                <ModelDataContextProvider>
+                    <AddCameraContextProvider>
+                        <AddCameraPage/>
+                    </AddCameraContextProvider>
+                </ModelDataContextProvider>
+            </AddCameraProjectsDataContext.default>
+    },
+    {
+        path: "/",
+        element:
+            <ProjectsDataContextProvider>
+                <ProjectsPage/>
+            </ProjectsDataContextProvider>,
     }
 ]);
 

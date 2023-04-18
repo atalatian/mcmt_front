@@ -24,6 +24,7 @@ const NameInput = (props: Require) => {
         <>
             <Controller name={name}/>
             <TextField
+                fullWidth
                 id="outlined-controlled"
                 label="Name"
                 value={name}

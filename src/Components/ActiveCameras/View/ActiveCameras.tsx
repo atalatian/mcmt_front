@@ -2,9 +2,9 @@ import Camera from "./Camera";
 import video from "../../../assets/video4.mp4";
 import {useCallback, useContext, useEffect, useMemo, useState} from "react";
 import { Provide as CameraProvide } from "./Camera";
-import {CamerasDataContext} from "../ViewModel/CamerasDataContext";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import {Box, Button} from "@mui/material";
+import {CamerasFilterContext} from "../ViewModel/CamerasFilterContext";
 
 export interface Require {
     id: number,
@@ -12,14 +12,14 @@ export interface Require {
 }
 const ActiveCameras = () => {
 
-    const cameras = useContext(CamerasDataContext)?.cameras;
+    const cameras = useContext(CamerasFilterContext)?.cameras;
     const [currentTime, setCurrentTime] = useState(0);
     const [play, setPlay] = useState(false);
     const [sync, setSync] = useState(false);
 
     if (cameras === undefined) return <></>;
     if (cameras.data === undefined) return <></>;
-    if (cameras.data.length === 0) return <></>;
+    if (cameras.data?.length === 0) return <></>;
 
 
     const PrimaryCameraController = (props: CameraProvide) => {
@@ -80,9 +80,6 @@ const ActiveCameras = () => {
         )
     }
 
-    //
-    //
-
     const handleClick = () => {
         setSync((prev) => !prev);
     }
@@ -101,9 +98,9 @@ const ActiveCameras = () => {
                 </Box>
                 <Grid2 container spacing={3}>
                     {
-                        cameras.data.map((camera, index) =>
-                            <Grid2 xs={4}>
-                                <Camera key={index} url={video} currentTime={currentTime} Controller={CameraController}/>
+                        cameras.data?.map((camera, index) =>
+                            <Grid2 key={index} xs={4}>
+                                <Camera url={camera.uri} currentTime={currentTime} Controller={CameraController}/>
                             </Grid2>
                         )
                     }
