@@ -8,7 +8,7 @@ import {
 import AddProjectPage from "./Components/AddProject/View/AddProjectPage";
 import ProjectsPage from "./Components/Projects/View/ProjectsPage";
 import CamerasPage from "./Components/Cameras/View/CamerasPage";
-import TrackingPage from "./Components/Tracking/View/TrackingPage";
+import TrackingPage from "./Components/Calibration/View/TrackingPage";
 import ActiveCamerasPage from "./Components/ActiveCameras/View/ActiveCamerasPage";
 import {
     QueryClient,
@@ -25,6 +25,8 @@ import * as AddCameraProjectsDataContext from "./Components/AddCamera/ViewModel/
 import ModelDataContextProvider from "./Components/AddCamera/ViewModel/ModelsDataContext";
 import AddCameraPage from "./Components/AddCamera/View/AddCameraPage";
 import AddCameraContextProvider from "./Components/AddCamera/ViewModel/AddCameraContext";
+import ProjectDataContextProvider from "./Components/Calibration/ViewModel/ProjectDataContext";
+import CameraDataContextProvider from "./Components/Calibration/ViewModel/CameraDataContext";
 
 const router = createBrowserRouter([
     {
@@ -51,8 +53,13 @@ const router = createBrowserRouter([
             </CamerasPageDataContext.default>,
     },
     {
-        path: "/tracking",
-        element: <TrackingPage/>,
+        path: "/project/:id/cameras/:cameraId/calibration",
+        element:
+            <ProjectDataContextProvider>
+                <CameraDataContextProvider>
+                    <TrackingPage/>
+                </CameraDataContextProvider>
+            </ProjectDataContextProvider>,
     },
     {
         path: "/project/:id/cameras/grid",

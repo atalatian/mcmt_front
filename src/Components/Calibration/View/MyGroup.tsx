@@ -1,4 +1,4 @@
-import {Shape, TrackingCanvasContext} from "../ViewModel/TrackingCanvasContext";
+import {Shape, CalibrationCanvasContext} from "../ViewModel/CalibrationCanvasContext";
 import { Group as KonvaGroup, Transformer as KonvaTransformer } from "react-konva";
 import {useCallback, useContext, useEffect, useRef, useState} from "react";
 import Konva from "konva";
@@ -18,8 +18,8 @@ const MyGroup = (props: Require) => {
 
     const { isSelected, shape } = props;
 
-    const changeXY = useContext(TrackingCanvasContext)?.changeXY;
-    const changeSelectedId = useContext(TrackingCanvasContext)?.changeSelectedId;
+    const changeXY = useContext(CalibrationCanvasContext)?.changeXY;
+    const changeSelectedId = useContext(CalibrationCanvasContext)?.changeSelectedId;
 
     if (changeXY === undefined) return <></>;
     if (changeSelectedId === undefined) return <></>;

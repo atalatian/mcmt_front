@@ -1,5 +1,5 @@
 import MyRect from "./MyRect";
-import {Shape} from "../ViewModel/TrackingCanvasContext";
+import {Shape} from "../ViewModel/CalibrationCanvasContext";
 
 export interface Require {
     shape: Shape,

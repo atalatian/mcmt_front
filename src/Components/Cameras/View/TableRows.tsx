@@ -8,6 +8,7 @@ import {useNavigate} from "react-router-dom";
 import {CamerasFilterContext} from "../ViewModel/CamerasFilterContext";
 
 export interface Require {
+    id: number,
     channel: string,
     model: string,
     uri: string,
@@ -36,7 +37,7 @@ const TableRows = () => {
 
     const handleClick = (id: number) => {
         return (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-
+            navigate(`${id}/calibration`);
         }
     }
 
@@ -46,6 +47,7 @@ const TableRows = () => {
                 cameras.data?.map((camera, index) => {
                     return(
                         <TableRow key={index}>
+                            <TableCell align="left">{camera.id}</TableCell>
                             <TableCell align="left">{camera.channel}</TableCell>
                             <TableCell align="left">{camera.model}</TableCell>
                             <TableCell align="left">{camera.uri}</TableCell>
@@ -53,7 +55,7 @@ const TableRows = () => {
                                 <CheckBox ClickListener={ClickListener} defaultValue={camera.is_calibrated}/>
                             </TableCell>
                             <TableCell align="left">
-                                <Button variant={`contained`} disabled={!camera.is_calibrated}>
+                                <Button variant={`contained`} onClick={handleClick(camera.id)}>
                                     Go
                                 </Button>
                             </TableCell>

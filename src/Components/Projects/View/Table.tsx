@@ -10,6 +10,9 @@ const Table = () => {
                         <TableCell align="left">ID</TableCell>
                         <TableCell align="left">Name</TableCell>
                         <TableCell align="left">Cameras List</TableCell>
+                        <TableCell align="left">Plan</TableCell>
+                        <TableCell align="left">Heat map</TableCell>
+                        <TableCell align="left">Virtual Map</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>

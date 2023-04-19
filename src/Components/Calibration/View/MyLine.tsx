@@ -1,6 +1,6 @@
 import {Line as KonvaLine} from "react-konva";
 import {useContext} from "react";
-import {TrackingCanvasContext} from "../ViewModel/TrackingCanvasContext";
+import {CalibrationCanvasContext} from "../ViewModel/CalibrationCanvasContext";
 
 export interface Require {
     isFinished: boolean,
@@ -10,8 +10,8 @@ export interface Require {
 const MyLine = (props: Require) => {
 
     const { isFinished, points } = props;
-    const rectWidth = useContext(TrackingCanvasContext)!.rectWidth;
-    const curMousePos = useContext(TrackingCanvasContext)!.curMousePos;
+    const rectWidth = useContext(CalibrationCanvasContext)!.rectWidth;
+    const curMousePos = useContext(CalibrationCanvasContext)!.curMousePos;
 
     return(
         <KonvaLine

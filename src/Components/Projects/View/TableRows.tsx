@@ -3,10 +3,14 @@ import {Button, TableCell, TableRow} from "@mui/material";
 import {useContext} from "react";
 import {ProjectsDataContext} from "../ViewModel/ProjectsDataContext";
 import {useNavigate} from "react-router-dom";
+import MyDialog from "./MyDialog";
 
 export interface Require {
     name: string,
     id: number,
+    plan: string,
+    heatmap: string,
+    visual_map: string,
 }
 
 const TableRows = () => {
@@ -35,6 +39,15 @@ const TableRows = () => {
                                 <Button variant={`contained`} onClick={handleClick(project.id)}>
                                     Cameras
                                 </Button>
+                            </TableCell>
+                            <TableCell align="left">
+                                <MyDialog src={project.plan} title={"Plan"}/>
+                            </TableCell>
+                            <TableCell align="left">
+                                <MyDialog src={project.heatmap} title={"Heat Map"}/>
+                            </TableCell>
+                            <TableCell align="left">
+                                <MyDialog src={project.visual_map} title={"Virtual Map"}/>
                             </TableCell>
                         </TableRow>
                     )

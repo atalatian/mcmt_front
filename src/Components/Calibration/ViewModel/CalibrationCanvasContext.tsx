@@ -1,6 +1,8 @@
-import {createContext, useEffect, useState} from "react";
+import {createContext, useContext, useEffect, useMemo, useState} from "react";
 import React from "react";
 import produce from "immer";
+import {FOVCalibrationDataContext} from "./FOVCalibrationDataContext";
+import {TopCalibrationDataContext} from "./TopCalibrationDataContext";
 
 export interface Shape {
     id: number,
@@ -37,14 +39,33 @@ export interface Provide {
     changeMousePos: (value: number[]) => void,
 }
 
-export const TrackingCanvasContext = createContext<Provide | undefined>(undefined);
+export const CalibrationCanvasContext = createContext<Provide | undefined>(undefined);
 
 
-const TrackingCanvasContextProvider = (props: React.PropsWithChildren<{}>) => {
+const CalibrationCanvasContextProvider = (props: React.PropsWithChildren<{ context: "FOV" | "Top" }>) => {
 
-    const [shapes, setShapes] = useState<Shape[]>([]);
+    const { context } = props;
+
+    const getContext = () => {
+        if (context === "FOV"){
+            return FOVCalibrationDataContext;
+        } else {
+            return TopCalibrationDataContext;
+        }
+    }
+
+    const shape = useContext(getContext())!.shape
+    const handleChange = useContext(getContext())!.handleChange;
+
+    const [shapes, setShapes] = useState<Shape[]>([{...shape}]);
     const [selectedId, setSelectedId] = useState<number>(-1);
     const [curMousePos, setCurMousePos] = useState<number[]>([0, 0]);
+
+    const firstShape = useMemo(() => shapes[0], [shapes[0].points]);
+
+    useEffect(() => {
+        handleChange(firstShape);
+    }, [firstShape])
 
     const changeIsFinished = (id: number, value: boolean) => {
         setShapes((prev) =>
@@ -145,10 +166,10 @@ const TrackingCanvasContextProvider = (props: React.PropsWithChildren<{}>) => {
     }
 
     return(
-        <TrackingCanvasContext.Provider value={value}>
+        <CalibrationCanvasContext.Provider value={value}>
             {props.children}
-        </TrackingCanvasContext.Provider>
+        </CalibrationCanvasContext.Provider>
     )
 }
 
-export default TrackingCanvasContextProvider;
+export default CalibrationCanvasContextProvider;

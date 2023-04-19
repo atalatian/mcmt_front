@@ -3,7 +3,7 @@ import {Line, Stage} from "react-konva";
 import {Layer} from "react-konva/es/ReactKonvaCore";
 import Konva from "konva";
 import KonvaEventObject = Konva.KonvaEventObject;
-import {shapeDefault, TrackingCanvasContext} from "../ViewModel/TrackingCanvasContext";
+import {shapeDefault, CalibrationCanvasContext} from "../ViewModel/CalibrationCanvasContext";
 import Layers from "./Layers";
 import {ContentCanvasBridgeContext} from "./ViewController/ContentCanvasBridgeContext";
 
@@ -11,12 +11,12 @@ const Canvas = () => {
 
     const width = useContext(ContentCanvasBridgeContext)?.width;
     const height = useContext(ContentCanvasBridgeContext)?.height;
-    const shapes = useContext(TrackingCanvasContext)?.shapes;
-    const addShape = useContext(TrackingCanvasContext)?.addShape;
-    const addPoint = useContext(TrackingCanvasContext)?.addPoint;
-    const changeSelectedId = useContext(TrackingCanvasContext)?.changeSelectedId;
-    const changeIsFinished = useContext(TrackingCanvasContext)?.changeIsFinished;
-    const changeMousePos = useContext(TrackingCanvasContext)?.changeMousePos;
+    const shapes = useContext(CalibrationCanvasContext)?.shapes;
+    const addShape = useContext(CalibrationCanvasContext)?.addShape;
+    const addPoint = useContext(CalibrationCanvasContext)?.addPoint;
+    const changeSelectedId = useContext(CalibrationCanvasContext)?.changeSelectedId;
+    const changeIsFinished = useContext(CalibrationCanvasContext)?.changeIsFinished;
+    const changeMousePos = useContext(CalibrationCanvasContext)?.changeMousePos;
 
     if (width === undefined) return <></>;
     if (height === undefined) return <></>;
@@ -31,6 +31,7 @@ const Canvas = () => {
 
     useEffect(() => {
         if (shape !== undefined) return;
+        if (shapes.length !== 0) return;
         addShape({...shapeDefault})
     }, [shape?.id])
 

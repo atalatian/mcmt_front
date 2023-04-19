@@ -7,12 +7,12 @@ export interface Provide {
 }
 
 export interface Require {
-    ClickListener: (props: Provide & { children: JSX.Element }) => JSX.Element,
+    Controller: (props: Provide) => JSX.Element,
 }
 
 const MyCheckBox = (props: Require) => {
 
-    const { ClickListener } = props;
+    const { Controller } = props;
 
     const [checked, setChecked] = useState(false);
 
@@ -21,7 +21,8 @@ const MyCheckBox = (props: Require) => {
     };
 
     return(
-        <ClickListener checked={checked}>
+        <>
+            <Controller checked={checked}/>
             <FormControlLabel control={
                 <MuiCheckBox
                     checked={checked}
@@ -29,7 +30,7 @@ const MyCheckBox = (props: Require) => {
                     inputProps={{ 'aria-label': 'controlled' }}
                 />
             } label={`Is Calibrated`}/>
-        </ClickListener>
+        </>
     )
 }
 

@@ -44,18 +44,14 @@ const AddCameraPage = () => {
         return <></>
     }
 
-    const ClickListener = (props: PropsWithChildren<CheckboxProvide>) => {
+    const CheckBoxController = (props: CheckboxProvide) => {
         const { checked } = props;
 
         useEffect(() => {
             changeIsCalibrated({checked})
         }, [checked])
 
-        return (
-            <>
-                {props.children}
-            </>
-        )
+        return <></>
     }
 
     const handleClick = async () => {
@@ -83,7 +79,7 @@ const AddCameraPage = () => {
                     <FileInput Controller={FileInputController}/>
                 </Box>
                 <Box>
-                    <MyCheckBox ClickListener={ClickListener}/>
+                    <MyCheckBox Controller={CheckBoxController}/>
                 </Box>
                 <Box>
                     <Button variant={`contained`} onClick={handleClick}>

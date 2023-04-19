@@ -1,4 +1,4 @@
-import {Shape, TrackingCanvasContext} from "../ViewModel/TrackingCanvasContext";
+import {Shape, CalibrationCanvasContext} from "../ViewModel/CalibrationCanvasContext";
 import {Rect} from "react-konva";
 import {useContext} from "react";
 import Konva from "konva";
@@ -14,9 +14,9 @@ const MyRect = (props: Require) => {
 
     const { shape, point, index } = props;
 
-    const changeIsMouseOverStartPoint = useContext(TrackingCanvasContext)?.changeIsMouseOverStartPoint;
-    const changePoints = useContext(TrackingCanvasContext)?.changePoints;
-    const rectWidth = useContext(TrackingCanvasContext)?.rectWidth;
+    const changeIsMouseOverStartPoint = useContext(CalibrationCanvasContext)?.changeIsMouseOverStartPoint;
+    const changePoints = useContext(CalibrationCanvasContext)?.changePoints;
+    const rectWidth = useContext(CalibrationCanvasContext)?.rectWidth;
 
     if (changeIsMouseOverStartPoint === undefined) return <></>;
     if (changePoints === undefined) return <></>;

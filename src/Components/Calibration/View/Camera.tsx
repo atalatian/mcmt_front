@@ -3,14 +3,16 @@ import videojs from "video.js";
 import 'video.js/dist/video-js.css';
 import Player from "video.js/dist/types/player";
 import {ContentCanvasBridgeContext} from "./ViewController/ContentCanvasBridgeContext";
+import {CameraDataContext} from "../ViewModel/CameraDataContext";
+import Video from "../../../assets/video4.mp4";
 
 export interface Require {
-    url: string,
+    uri: string,
 }
 
-const Camera = (props: Require) => {
+const Camera = () => {
 
-    const { url } = props;
+    const camera = useContext(CameraDataContext)?.camera;
     const videoRef = useRef<HTMLDivElement>();
     const [videoRefSpecified, setVideoRefSpecified] = useState(false);
     const playerRef = useRef<Player>();
@@ -23,6 +25,7 @@ const Camera = (props: Require) => {
 
     useEffect(() => {
         if (!videoRefSpecified || videoRef.current === undefined) return;
+        if (playerRef.current !== undefined) return;
 
         const videoElement = document.createElement("video-js");
         videoElement.classList.add('vjs-big-play-centered');
@@ -49,10 +52,10 @@ const Camera = (props: Require) => {
     useEffect(() => {
         if (!playerRefSpecified || playerRef.current === undefined) return;
         playerRef.current?.src([{
-            src: url,
+            src: camera?.data?.uri,
             type: 'video/mp4'
         }])
-    }, [playerRefSpecified])
+    }, [playerRefSpecified, camera?.data?.uri])
 
     const handleRef = useCallback((el: HTMLDivElement | null)=>{
         if (el === null) return;

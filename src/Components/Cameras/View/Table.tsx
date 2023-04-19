@@ -7,11 +7,12 @@ const Table = () => {
             <MuiTable aria-label="simple table">
                 <TableHead>
                     <TableRow>
+                        <TableCell align="left">ID</TableCell>
                         <TableCell align="left">Channel</TableCell>
                         <TableCell align="left">Model</TableCell>
                         <TableCell align="left">URI</TableCell>
                         <TableCell align="left">Is Calibrated</TableCell>
-                        <TableCell align="left">Tracking</TableCell>
+                        <TableCell align="left">Calibration</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
