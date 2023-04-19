@@ -21,7 +21,6 @@ const TopCalibrationDataContextProvider = (props: PropsWithChildren<{}>) => {
     const changeTop = useContext(CameraDataContext)?.changeTop;
 
     if (camera === undefined) return <></>
-    if (camera.data === undefined) return <></>
     if (changeTop === undefined) return <></>
     if (width === undefined) return <></>
     if (height === undefined) return <></>
@@ -33,7 +32,7 @@ const TopCalibrationDataContextProvider = (props: PropsWithChildren<{}>) => {
     }
 
     const value = {
-        shape: {...shapeDefault, points: camera.data.config.top.map((point) => [point[0] * width, point[1] * height]), id: 0},
+        shape: CalibrationProxy({...shapeDefault, points: camera.data!.config.top, id: 0}, width, height),
         handleChange,
     }
 

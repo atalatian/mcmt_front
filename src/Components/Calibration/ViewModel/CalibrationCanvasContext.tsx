@@ -1,8 +1,8 @@
 import {createContext, useContext, useEffect, useMemo, useState} from "react";
 import React from "react";
 import produce from "immer";
-import {FOVCalibrationDataContext} from "./FOVCalibrationDataContext";
-import {TopCalibrationDataContext} from "./TopCalibrationDataContext";
+import { Provide as FOVProvide } from "./FOVCalibrationDataContext";
+import { Provide as TopProvide } from "./TopCalibrationDataContext";
 
 export interface Shape {
     id: number,
@@ -42,26 +42,21 @@ export interface Provide {
 export const CalibrationCanvasContext = createContext<Provide | undefined>(undefined);
 
 
-const CalibrationCanvasContextProvider = (props: React.PropsWithChildren<{ context: "FOV" | "Top" }>) => {
+const CalibrationCanvasContextProvider = (props: React.PropsWithChildren<{ Context: React.Context<FOVProvide | TopProvide | undefined> }>) => {
 
-    const { context } = props;
+    const { Context } = props;
 
-    const getContext = () => {
-        if (context === "FOV"){
-            return FOVCalibrationDataContext;
-        } else {
-            return TopCalibrationDataContext;
-        }
-    }
-
-    const shape = useContext(getContext())!.shape
-    const handleChange = useContext(getContext())!.handleChange;
+    const shape = useContext(Context)!.shape
+    const handleChange = useContext(Context)!.handleChange;
 
     const [shapes, setShapes] = useState<Shape[]>([{...shape}]);
     const [selectedId, setSelectedId] = useState<number>(-1);
     const [curMousePos, setCurMousePos] = useState<number[]>([0, 0]);
+    const firstShape = useMemo(() => shapes[0], [shapes[0].points, shapes[0].x, shapes[0].y]);
 
-    const firstShape = useMemo(() => shapes[0], [shapes[0].points]);
+    useEffect(() => {
+        setShapes([{...shape}])
+    }, [shape])
 
     useEffect(() => {
         handleChange(firstShape);
@@ -154,7 +149,7 @@ const CalibrationCanvasContextProvider = (props: React.PropsWithChildren<{ conte
         shapes,
         selectedId,
         curMousePos,
-        rectWidth: 7,
+        rectWidth: 6,
         changeIsFinished,
         changeIsMouseOverStartPoint,
         changePoints,

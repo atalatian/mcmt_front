@@ -1,5 +1,4 @@
 import Camera from "./Camera";
-import video from "../../../assets/video4.mp4";
 import {useCallback, useContext, useEffect, useMemo, useState} from "react";
 import { Provide as CameraProvide } from "./Camera";
 import Grid2 from "@mui/material/Unstable_Grid2";
@@ -9,6 +8,7 @@ import {CamerasFilterContext} from "../ViewModel/CamerasFilterContext";
 export interface Require {
     id: number,
     uri: string,
+    is_top: boolean,
 }
 const ActiveCameras = () => {
 
@@ -21,6 +21,8 @@ const ActiveCameras = () => {
     if (cameras.data === undefined) return <></>;
     if (cameras.data?.length === 0) return <></>;
 
+
+    const primary = cameras.data.find((camera) => camera.is_top);
 
     const PrimaryCameraController = (props: CameraProvide) => {
         const { player, playerSpecified } = props;
@@ -47,9 +49,10 @@ const ActiveCameras = () => {
             })
             //@ts-ignore
             player.on("timeupdate", () => {
-                setCurrentTimeCopy(player.currentTime())
+                setCurrentTimeCopy(Number(player.currentTime().toFixed(1)))
             })
         }, [playerSpecified, play])
+
 
         return (
             <></>
@@ -90,7 +93,7 @@ const ActiveCameras = () => {
         <>
             <Box overflow={`hidden`}>
                 <Box position={`fixed`} width={`${100/3}vw`} zIndex={2} bottom={10} right={10}>
-                    <Camera url={cameras.data[0].uri} Controller={PrimaryCameraController}/>
+                    <Camera url={primary ? primary.uri : ""} Controller={PrimaryCameraController}/>
                     <Box mt={1}>
                         <Button fullWidth onClick={handleClick} variant={`contained`}>
                             Sync

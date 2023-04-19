@@ -18,7 +18,6 @@ const FOVCalibrationDataContextProvider = (props: PropsWithChildren<{}>) => {
     const changeFov = useContext(CameraDataContext)?.changeFov;
 
     if (camera === undefined) return <></>
-    if (camera.data === undefined) return <></>
     if (changeFov === undefined) return <></>
     if (width === undefined) return <></>
     if (height === undefined) return <></>
@@ -30,7 +29,7 @@ const FOVCalibrationDataContextProvider = (props: PropsWithChildren<{}>) => {
     }
 
     const value = {
-        shape: {...shapeDefault, points: camera.data.config.fov.map((point) => [point[0] * width, point[1] * height]), id: 0},
+        shape: CalibrationProxy({...shapeDefault, points: camera.data!.config.fov, id: 0}, width, height),
         handleChange,
     }
 

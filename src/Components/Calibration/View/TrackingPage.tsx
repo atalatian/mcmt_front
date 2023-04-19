@@ -1,6 +1,6 @@
 import CameraCanvas from "./CameraCanvas";
 import TopShotCanvas from "./TopShotCanvas";
-import {Box, Button, Divider, IconButton, Stack} from "@mui/material";
+import {Box, Button, IconButton, Stack} from "@mui/material";
 import MyAppBar from "../../ApplicationSpecific/MyAppBar";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import {useContext} from "react";
@@ -8,15 +8,12 @@ import {CameraDataContext} from "../ViewModel/CameraDataContext";
 
 const TrackingPage = () => {
 
-
-    const changeIsCalibrated = useContext(CameraDataContext)!.changeIsCalibrated;
     const submitTrigger = useContext(CameraDataContext)!.submitTrigger;
     const handleArrowBackClick = () => {
         history.back();
     }
 
     const handleSubmit = async () => {
-        changeIsCalibrated(true);
         await submitTrigger();
         history.back();
     }

@@ -24,7 +24,7 @@ const MyLine = (props: Require) => {
             stroke="red"
             opacity={0.7}
             fill={'#FFC8C8'}
-            strokeWidth={3}
+            strokeWidth={2}
             closed={isFinished}
         />
     )

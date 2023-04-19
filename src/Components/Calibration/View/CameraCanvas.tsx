@@ -4,6 +4,8 @@ import CalibrationCanvasContextProvider from "../ViewModel/CalibrationCanvasCont
 import ContentCanvasBridgeContextProvider from "./ViewController/ContentCanvasBridgeContext";
 import {Box} from "@mui/material";
 import FOVCalibrationDataContextProvider from "../ViewModel/FOVCalibrationDataContext";
+import {FOVCalibrationDataContext} from "../ViewModel/FOVCalibrationDataContext";
+import Controls from "./Controls";
 
 const CameraCanvas = () => {
     return(
@@ -14,10 +16,11 @@ const CameraCanvas = () => {
                         <Camera/>
                     </Box>
                     <FOVCalibrationDataContextProvider>
-                        <CalibrationCanvasContextProvider context={"FOV"}>
+                        <CalibrationCanvasContextProvider Context={FOVCalibrationDataContext}>
                             <Box position={`absolute`} left={0} top={0} zIndex={1}>
                                 <Canvas/>
                             </Box>
+                            <Controls/>
                         </CalibrationCanvasContextProvider>
                     </FOVCalibrationDataContextProvider>
                 </Box>

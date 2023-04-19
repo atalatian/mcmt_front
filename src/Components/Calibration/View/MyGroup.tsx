@@ -7,7 +7,6 @@ import Transformer = Konva.Transformer;
 import KonvaEventObject = Konva.KonvaEventObject;
 import MyLine from "./MyLine";
 import Rects from "./Rects";
-import {is} from "immer/dist/utils/common";
 
 export interface Require {
     shape: Shape,
@@ -114,20 +113,27 @@ const MyGroup = (props: Require) => {
 
     const handleMouseOver = (event: KonvaEventObject<MouseEvent>) => {
         event.cancelBubble = shape.isFinished;
-        if (shape.isFinished && !isSelected){
-            event.target.getStage()!.container().style.cursor = 'pointer';
-        }
-        if (shape.isFinished && isSelected){
-            event.target.getStage()!.container().style.cursor = 'grab';
+        // if (shape.isFinished && !isSelected){
+        //     event.target.getStage()!.container().style.cursor = 'pointer';
+        // }
+        // if (shape.isFinished && isSelected){
+        //     event.target.getStage()!.container().style.cursor = 'grab';
+        // }
+        if (shape.isFinished){
+           event.target.getStage()!.container().style.cursor = 'grab';
         }
     }
 
     const handleMouseEnter = (event: KonvaEventObject<MouseEvent>) => {
         event.cancelBubble = shape.isFinished
-        if (shape.isFinished && !isSelected){
-            event.target.getStage()!.container().style.cursor = 'pointer';
-        }
-        if (shape.isFinished && isSelected){
+        // if (shape.isFinished && !isSelected){
+        //     event.target.getStage()!.container().style.cursor = 'pointer';
+        // }
+        // if (shape.isFinished && isSelected){
+        //     event.target.getStage()!.container().style.cursor = 'grab';
+        // }
+
+        if (shape.isFinished){
             event.target.getStage()!.container().style.cursor = 'grab';
         }
     }
@@ -172,7 +178,7 @@ const MyGroup = (props: Require) => {
                 <Rects shape={shape}/>
             </KonvaGroup>
             {
-                isSelected &&
+                isSelected && false &&
                 <KonvaTransformer padding={10} borderStroke={`#1565c0`} borderStrokeWidth={4} ref={handleTransformerRef} resizeEnabled={false}
                                   rotateEnabled={false}/>
             }
