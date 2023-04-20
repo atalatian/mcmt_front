@@ -14,7 +14,7 @@ const ActiveCameras = () => {
 
     const cameras = useContext(CamerasFilterContext)?.cameras;
     const [currentTime, setCurrentTime] = useState(0);
-    const [play, setPlay] = useState(false);
+    const [play, setPlay] = useState(true);
     const [sync, setSync] = useState(false);
 
     if (cameras === undefined) return <></>;
@@ -27,31 +27,32 @@ const ActiveCameras = () => {
     const PrimaryCameraController = (props: CameraProvide) => {
         const { player, playerSpecified } = props;
         const setCurrentTimeCopy = useCallback((state: number) => setCurrentTime(state) , []);
-        const copyPlay = useMemo(() => play, [play]);
         const setPlayCopy = useCallback((state: boolean) => setPlay(state), []);
+        const copySync = useMemo(() => sync, [sync]);
 
         useEffect(() => {
             if (!playerSpecified || player === undefined) return;
 
-            if (copyPlay){
-                player.play();
-            } else {
-                player.pause();
+            const progressBar = player.contentEl().getElementsByClassName("vjs-progress-control").item(0)! as HTMLElement;
+            const playControl = player.contentEl().getElementsByClassName("vjs-play-control").item(0)! as HTMLElement;
+
+            progressBar.onclick = () => {
+                setCurrentTimeCopy(Number(player.currentTime().toFixed(2)))
             }
 
-            //@ts-ignore
-            player.on("pause", () => {
-                setPlayCopy(false);
-            })
-            //@ts-ignore
-            player.on("play", () => {
-                setPlayCopy(true);
-            })
-            //@ts-ignore
-            player.on("timeupdate", () => {
-                setCurrentTimeCopy(Number(player.currentTime().toFixed(1)))
-            })
-        }, [playerSpecified, play])
+            playControl.onclick = () => {
+                setPlay((prev)=> !prev);
+            }
+
+
+        }, [playerSpecified])
+
+
+        useEffect(() => {
+            if (!playerSpecified || player === undefined) return;
+            setCurrentTimeCopy(Number(player.currentTime().toFixed(2)))
+            setPlayCopy(!player.paused())
+        }, [playerSpecified, copySync])
 
 
         return (
@@ -64,19 +65,20 @@ const ActiveCameras = () => {
         const { player, playerSpecified } = props
         const currentTimeCopy = useMemo(() => currentTime, [currentTime])
         const copyPlay = useMemo(() => play, [play]);
-        const copySync = useMemo(() => sync, [sync]);
 
         useEffect(() => {
             if (!playerSpecified || player === undefined) return;
             player.currentTime(currentTimeCopy);
+        }, [playerSpecified, currentTimeCopy])
 
+        useEffect(() => {
+            if (!playerSpecified || player === undefined) return;
             if (copyPlay){
                 player.play();
             } else {
                 player.pause();
             }
-
-        }, [playerSpecified, currentTimeCopy, copyPlay, copySync])
+        }, [playerSpecified, copyPlay])
 
         return(
             <></>
